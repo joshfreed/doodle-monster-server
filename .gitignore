@@ -1,0 +1,10 @@
+node_modules
+.idea/
+npm-debug.log
+.baseDir.*
+.tscache
+.tmp
+.DS_Store
+coverage
+.env
+.env.*
