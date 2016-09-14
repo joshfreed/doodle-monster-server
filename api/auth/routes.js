@@ -1,9 +1,7 @@
 'use strict';
 
 const Joi = require('joi');
-
 const config = require('../config');
-
 const AuthController = require('./AuthController');
 const AuthService = require('./AuthService');
 const HashService = require('./HashService');

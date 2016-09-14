@@ -2,8 +2,8 @@
 
 const Module = {
   register: (server, options, next) => {
-    // server.route(require('./routes'));
     require('./schema.js');
+    server.route(require('./routes'));
     next();
   }
 };
