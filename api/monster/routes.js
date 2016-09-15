@@ -19,7 +19,7 @@ const monsterSchema = Joi.object({
   turnCount: Joi.number(),
   gameOver: Joi.bool(),
   name: Joi.string().allow(''),
-  thumbnail: Joi.string(),
+  thumbnail: Joi.any(),
   lastTurn: Joi.date(),
   players: Joi.array().items(playerSchema).required()
 });

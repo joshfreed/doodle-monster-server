@@ -12,6 +12,9 @@ server.connection({
   routes: {validate: {options: {stripUnknown: true}}}
 });
 
+const mongoose = require('mongoose');
+mongoose.connect(config.mongoUri);
+
 
 //// Plugins
 
@@ -62,5 +65,3 @@ server.start((err) => {
 
   console.log('Server running at:', server.info.uri);
 });
-
-module.exports = server;

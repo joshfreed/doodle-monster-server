@@ -1,14 +1,15 @@
 'use strict';
 
+const Player = require('mongoose').model('Player');
+
 class AuthService {
   constructor(hashService, tokenService) {
     this.hashService = hashService;
     this.tokenService = tokenService;
-    this.Player = require('mongoose').model('Player');
   }
 
   loginByEmail(email, password) {
-    return this.Player
+    return Player
       .findOne({email: email})
       .then(player => {
         if (!player) {
