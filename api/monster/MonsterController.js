@@ -17,6 +17,17 @@ class MonsterController {
       .then(monster => reply(monster.toObject()).created())
       .catch(err => utils.errorHandler(err, reply))
   }
+
+  getActiveMonsters(request, reply) {
+    const me = request.auth.credentials;
+
+    this.monsterService
+      .getActiveMonsters(me.id)
+      .then(monsters => {
+        reply(monsters.map(m => m.toObject()));
+      })
+      .catch(err => utils.errorHandler(err, reply))
+  }
 }
 
 module.exports = MonsterController;

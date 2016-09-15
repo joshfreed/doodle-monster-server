@@ -19,6 +19,13 @@ class MonsterService {
     return this._saveMonster(monster);
   }
 
+  getActiveMonsters(playerId) {
+    return Monster
+      .find({gameOver: false})
+      .populate('players')
+      .where('players').in([playerId])
+  }
+
   _saveMonster(monster) {
     return monster
       .save()

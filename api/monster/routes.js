@@ -38,6 +38,16 @@ const routes = [
       response: {schema: monsterSchema.required().label('Monster')}
     },
     handler: monsterController.createMonster.bind(monsterController)
+  },
+
+  {
+    method: 'GET',
+    path: '/me/monsters',
+    config: {
+      tags: ['api'],
+      response: {schema: Joi.array().items(monsterSchema)}
+    },
+    handler: monsterController.getActiveMonsters.bind(monsterController)
   }
 ];
 

@@ -80,3 +80,65 @@ lab.experiment('POST /monster', () => {
     });
   });
 });
+
+lab.experiment('GET /me/monsters', () => {
+  const url = '/api/me/monsters';
+  var player1, player2, player3, player4;
+  var monster1, monster2;
+
+  lab.beforeEach(done => {
+    helper
+      .createPlayer({email: 'player1@email.com'})
+      .then(p => player1 = p)
+      .then(() => helper.createPlayer({email: 'player2@email.com'}))
+      .then(p => player2 = p)
+      .then(() => helper.createPlayer({email: 'player3@email.com'}))
+      .then(p => player3 = p)
+      .then(() => helper.createPlayer({email: 'player4@email.com'}))
+      .then(p => player4 = p)
+      .then(() => {
+        return helper
+          .aMonster()
+          .withStartingPlayerId(player1.id)
+          .withOtherPlayerIds([player2.id, player3.id])
+          .build()
+      })
+      .then(m => monster1 = m)
+      .then(() => {
+        return helper
+          .aMonster()
+          .withStartingPlayerId(player2.id)
+          .withOtherPlayerIds([player3.id, player1.id])
+          .build()
+      })
+      .then(m => monster2 = m)
+      .then(() => {
+        return helper
+          .aMonster()
+          .withStartingPlayerId(player4.id)
+          .withOtherPlayerIds([player3.id, player2.id])
+          .build()
+      })
+      .then(() => {
+        return helper
+          .aMonster()
+          .withStartingPlayerId(player1.id)
+          .withOtherPlayerIds([player2.id, player3.id])
+          .thatIsFinished()
+          .build()
+      })
+      .then(() => done()).catch(done);
+  });
+
+  lab.test('Returns my active monsters', done => {
+    server.inject({method: 'GET', url: url, credentials: player1}, res => {
+      res.statusCode.should.equal(200);
+
+      const payload = JSON.parse(res.payload);
+      payload.should.be.an('array').with.lengthOf(2);
+      payload.should.include(monster1);
+      payload.should.include(monster2);
+      done();
+    });
+  });
+});
