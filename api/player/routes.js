@@ -21,7 +21,7 @@ const playerSchema = Joi.object({
 const routes = [
   {
     method: 'POST',
-    path:'/player',
+    path: '/player',
     config: {
       auth: false,
       tags: ['api'],

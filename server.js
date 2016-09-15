@@ -28,7 +28,7 @@ server.register(
 );
 
 function validate(decoded, request, cb) {
-  print(decoded);
+  console.log("validate", decoded);
   cb(null, true);
 }
 
@@ -50,6 +50,7 @@ server.register(require('hapi-auth-jwt2'), err => {
 
 require('./api/player')(server);
 require('./api/auth')(server);
+require('./api/monster')(server);
 
 
 //// GO!
