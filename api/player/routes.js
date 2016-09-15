@@ -38,6 +38,21 @@ const routes = [
       })}
     },
     handler: playerController.createPlayer.bind(playerController)
+  },
+
+  {
+    method: 'GET',
+    path: '/player/{playerId}',
+    config: {
+      tags: ['api'],
+      validate: {
+        params: {
+          playerId: Joi.string().required()
+        }
+      },
+      response: {schema: playerSchema.required()}
+    },
+    handler: playerController.getPlayer.bind(playerController)
   }
 ];
 

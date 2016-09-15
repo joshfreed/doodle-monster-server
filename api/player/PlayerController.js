@@ -14,6 +14,19 @@ class PlayerController {
       .then(result => reply(result).created())
       .catch(err => utils.errorHandler(err, reply))
   }
+
+  getPlayer(request, reply) {
+    return this.playerService
+      .findById(request.params.playerId)
+      .then(result => {
+        if (!result) {
+          return reply(Boom.notFound());
+        }
+
+        reply(result.toObject());
+      })
+      .catch(err => utils.errorHandler(err, reply))
+  }
 }
 
 module.exports = PlayerController;

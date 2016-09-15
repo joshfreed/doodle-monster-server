@@ -29,6 +29,10 @@ class PlayerService {
         }
       });
   }
+
+  findById(playerId) {
+    return Player.findById(playerId)
+  }
 }
 
 module.exports = PlayerService;
