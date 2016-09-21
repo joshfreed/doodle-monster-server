@@ -33,6 +33,14 @@ class PlayerService {
   findById(playerId) {
     return Player.findById(playerId)
   }
+
+  search(terms) {
+    if (terms.email) {
+      terms.email = new RegExp(terms.email, "i");
+    }
+
+    return Player.find(terms);
+  }
 }
 
 module.exports = PlayerService;

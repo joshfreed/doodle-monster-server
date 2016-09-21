@@ -27,6 +27,15 @@ class PlayerController {
       })
       .catch(err => utils.errorHandler(err, reply))
   }
+
+  searchPlayers(request, reply) {
+    return this.playerService
+      .search(request.query)
+      .then(result => {
+        return reply(result.map(p => p.toObject()))
+      })
+      .catch(err => utils.errorHandler(err, reply))
+  }
 }
 
 module.exports = PlayerController;

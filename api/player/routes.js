@@ -53,6 +53,21 @@ const routes = [
       response: {schema: playerSchema.required()}
     },
     handler: playerController.getPlayer.bind(playerController)
+  },
+
+  {
+    method: 'GET',
+    path: '/players',
+    config: {
+      tags: ['api'],
+      validate: {
+        query: {
+          email: Joi.string()
+        }
+      },
+      response: {schema: Joi.array().items(playerSchema).required()}
+    },
+    handler: playerController.searchPlayers.bind(playerController)
   }
 ];
 
