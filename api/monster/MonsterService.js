@@ -5,17 +5,13 @@ const Boom = require('boom');
 const _ = require('lodash');
 
 class MonsterService {
+  constructor(imageService) {
+    this.imageService = imageService;
+  }
+
   createMonster(startingPlayerId, otherPlayerIds) {
     var monster = new Monster();
-    monster.name = "";
-    monster.currentPlayerNumber = 0;
-    monster.turnCount = 0;
-    monster.gameOver = false;
-
-    let playerIds = otherPlayerIds;
-    playerIds.unshift(startingPlayerId);
-    monster.players = _.uniq(playerIds);
-
+    monster.createMonster(startingPlayerId, otherPlayerIds);
     return this._saveMonster(monster);
   }
 
@@ -34,6 +30,31 @@ class MonsterService {
           .populate('players')
           .execPopulate()
       })
+  }
+
+  getMonster(monsterId) {
+    return Monster
+      .findById(monsterId)
+      .select('+imageData')
+      .populate('players')
+  }
+
+  addTurn(monsterId, playerId, imageData, letter) {
+    return Monster
+      .findById(monsterId)
+      .then(monster => {
+        monster.addTurn(playerId, imageData, letter, new Date());
+        return this._generateThumbnail(monster);
+      });
+  }
+
+  _generateThumbnail(monster) {
+    return this.imageService
+      .makeThumbnail(monster.imageData)
+      .then(buffer => {
+        monster.thumbnail = buffer;
+        return this._saveMonster(monster);
+      });
   }
 }
 

@@ -28,6 +28,31 @@ class MonsterController {
       })
       .catch(err => utils.errorHandler(err, reply))
   }
+
+  getMonster(request, reply) {
+    this.monsterService
+      .getMonster(request.params.monsterId)
+      .then(monster => {
+        if (!monster) {
+          return reply(Boom.notFound());
+        }
+
+        reply(monster.toObject());
+      })
+      .catch(err => utils.errorHandler(err, reply))
+  }
+
+  addTurn(request, reply) {
+    const me = request.auth.credentials;
+    const monsterId = request.params.monsterId;
+    const imageData = request.payload.imageData;
+    const letter = request.payload.letter;
+
+    this.monsterService
+      .addTurn(monsterId, me.id, imageData, letter)
+      .then(monster => reply(monster.toObject()))
+      .catch(err => utils.errorHandler(err, reply))
+  }
 }
 
 module.exports = MonsterController;

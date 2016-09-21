@@ -5,6 +5,8 @@ process.env.NODE_ENV = 'test';
 const lab = require('lab').script();
 
 const chai = require('chai');
+chai.use(require('chai-datetime'));
+chai.use(require('chai-fs'));
 chai.should();
 
 const mongoose = require('mongoose');

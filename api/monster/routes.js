@@ -3,8 +3,10 @@
 const Joi = require('joi');
 const MonsterController = require('./MonsterController');
 const MonsterService = require('./MonsterService');
+const ImageService = require('../utilities/ImageService');
 
-const monsterService = new MonsterService();
+const imageService = new ImageService();
+const monsterService = new MonsterService(imageService);
 const monsterController = new MonsterController(monsterService);
 
 const playerSchema = Joi.object({
@@ -19,9 +21,13 @@ const monsterSchema = Joi.object({
   turnCount: Joi.number(),
   gameOver: Joi.bool(),
   name: Joi.string().allow(''),
-  thumbnail: Joi.any(),
+  thumbnail: Joi.binary().encoding('base64'),
   lastTurn: Joi.date(),
   players: Joi.array().items(playerSchema).required()
+});
+
+const monsterWithImageData = monsterSchema.keys({
+  imageData: Joi.binary().encoding('base64')
 });
 
 const routes = [
@@ -48,6 +54,42 @@ const routes = [
       response: {schema: Joi.array().items(monsterSchema)}
     },
     handler: monsterController.getActiveMonsters.bind(monsterController)
+  },
+
+  {
+    method: 'GET',
+    path: '/monster/{monsterId}',
+    config: {
+      tags: ['api'],
+      validate: {params: {monsterId: Joi.string().required()}},
+      response: {schema: monsterWithImageData.label('Monster')}
+    },
+    handler: monsterController.getMonster.bind(monsterController)
+  },
+
+  {
+    method: 'POST',
+    path: '/monster/{monsterId}/turns',
+    config: {
+      tags: ['api'],
+      // plugins: {'hapi-swagger': {payloadType: 'form'}},
+      // payload: {
+      //   output: 'stream',
+      //   parse: true,
+      //   // allow: 'multipart/form-data',
+      //   maxBytes: 1048576 * 20, // 20MB
+      // },
+      validate: {
+        params: {
+          monsterId: Joi.string().required()
+        },
+        payload: {
+          imageData: Joi.binary().encoding('base64'),
+          letter: Joi.string().length(1).required()
+        }
+      },
+    },
+    handler: monsterController.addTurn.bind(monsterController)
   }
 ];
 

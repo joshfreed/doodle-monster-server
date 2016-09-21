@@ -59,12 +59,29 @@ class MonsterBuilder {
     return this;
   }
 
+  withImageData(imageData) {
+    this.imageData = imageData;
+    return this;
+  }
+
+  withThumbnail(buffer) {
+    this.thumbnail = buffer;
+    return this;
+  }
+
   build() {
     const monster = new Monster();
     monster.name = "";
     monster.currentPlayerNumber = 0;
     monster.turnCount = 0;
     monster.gameOver = this.gameOver;
+
+    if (this.imageData) {
+      monster.imageData = this.imageData;
+    }
+    if (this.thumbnail) {
+      monster.thumbnail = this.thumbnail;
+    }
 
     var playerIds = this.otherPlayerIds;
     playerIds.unshift(this.startingPlayerId);
