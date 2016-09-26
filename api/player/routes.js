@@ -20,27 +20,6 @@ const playerSchema = Joi.object({
 
 const routes = [
   {
-    method: 'POST',
-    path: '/player',
-    config: {
-      auth: false,
-      tags: ['api'],
-      validate: {
-        payload: {
-          email: Joi.string().email().required(),
-          password: Joi.string().required(),
-          displayName: Joi.string().allow('')
-        }
-      },
-      response: {schema: Joi.object({
-        token: Joi.string().required(),
-        player: playerSchema.required()
-      })}
-    },
-    handler: playerController.createPlayer.bind(playerController)
-  },
-
-  {
     method: 'GET',
     path: '/player/{playerId}',
     config: {

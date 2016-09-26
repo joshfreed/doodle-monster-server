@@ -8,13 +8,6 @@ class PlayerController {
     this.playerService = playerService;
   }
 
-  createPlayer(request, reply) {
-    return this.playerService
-      .createPlayer(request.payload)
-      .then(result => reply(result).created())
-      .catch(err => utils.errorHandler(err, reply))
-  }
-
   getPlayer(request, reply) {
     return this.playerService
       .findById(request.params.playerId)

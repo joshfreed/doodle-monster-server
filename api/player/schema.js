@@ -3,9 +3,10 @@
 const mongoose = require('mongoose');
 
 const playerSchema = mongoose.Schema({
-  email: String,
+  email: {type: String, index: {unique: true}, required: true},
   password: String,
-  displayName: String
+  displayName: String,
+  facebookId: String
 });
 if (!playerSchema.options.toObject) {
   playerSchema.options.toObject = {};
