@@ -8,7 +8,7 @@ const should = require('chai').should();
 const Boom = require('boom');
 
 lab.experiment('GET /players', () => {
-  var url = '/api/players';
+  var url = '/players';
   var player1, player2, player3;
 
   lab.beforeEach(done => {
@@ -38,7 +38,7 @@ lab.experiment('GET /players', () => {
   });
 
   lab.test('Returns players with emails matching any of the search string', done => {
-    var url = '/api/players?email=rry';
+    var url = '/players?email=rry';
 
     server.inject({method: 'GET', url: url}, res => {
       res.statusCode.should.equal(200);

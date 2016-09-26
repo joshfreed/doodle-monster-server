@@ -17,7 +17,7 @@ lab.experiment('GET /player/:playerId', () => {
   });
 
   lab.test('Returns the player', done => {
-    const url = "/api/player/" + expected.id;
+    const url = "/player/" + expected.id;
 
     server.inject({method: 'GET', url: url, credentials: {}}, res => {
       res.statusCode.should.equal(200);
@@ -33,7 +33,7 @@ lab.experiment('GET /player/:playerId', () => {
   });
 
   lab.test('Player not found', done => {
-    const url = "/api/player/" + require('mongoose').Types.ObjectId();
+    const url = "/player/" + require('mongoose').Types.ObjectId();
 
     server.inject({method: 'GET', url: url, credentials: {}}, res => {
       res.statusCode.should.equal(404);

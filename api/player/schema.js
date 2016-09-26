@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 const playerSchema = mongoose.Schema({
-  email: {type: String, index: {unique: true}, required: true},
+  email: String,
   password: String,
   displayName: String,
   facebookId: String

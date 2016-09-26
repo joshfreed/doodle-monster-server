@@ -25,12 +25,8 @@ class AuthController {
   }
 
   loginByFacebook(request, reply) {
-    const facebookId = request.payload.facebookId;
-    const email = request.payload.email;
-    const displayName = request.payload.displayName;
-
     return this.authService
-      .loginByFacebook(facebookId, email, displayName)
+      .loginByFacebook(request.payload.accessToken)
       .then(result => reply(result))
       .catch(err => utils.errorHandler(err, reply))
   }

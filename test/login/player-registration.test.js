@@ -11,7 +11,7 @@ const should = require('chai').should();
 const Boom = require('boom');
 
 lab.experiment('POST /player', () => {
-  const url = "/api/player";
+  const url = "/player";
   const hashService = new HashService();
   var hashedPassword;
 

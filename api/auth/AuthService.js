@@ -5,10 +5,11 @@ const Boom = require('boom');
 const Promise = require('bluebird');
 
 class AuthService {
-  constructor(hashService, tokenService, playerService) {
+  constructor(hashService, tokenService, playerService, facebookService) {
     this.hashService = hashService;
     this.tokenService = tokenService;
     this.playerService = playerService;
+    this.facebookService = facebookService;
   }
 
   registerPlayer(fields) {
@@ -39,26 +40,30 @@ class AuthService {
       })
   }
 
-  loginByFacebook(facebookId, email, displayName) {
-    const fields = {
-      facebookId: facebookId,
-      email: email
-    };
-
-    if (displayName) {
-      fields.displayName = displayName;
-    }
-
-    return this._findPlayer(facebookId, email)
-      .then(player => {
-        if (player) {
-          return this._updatePlayer(player, fields);
-        } else {
-          return this._registerPlayer(fields);
+  loginByFacebook(accessToken) {
+    return this.facebookService
+      .me(accessToken)
+      .then(me => {
+        var fields = {};
+        fields.facebookId = me.id;
+        if (me.email) {
+          fields.email = me.email;
         }
-      })
-      .then(player => {
-        return this._buildResult(player);
+        if (me.name) {
+          fields.displayName = me.name;
+        }
+
+        return this._findPlayer(me.id, me.email)
+          .then(player => {
+            if (player) {
+              return this._updatePlayer(player, fields);
+            } else {
+              return this._registerPlayer(fields);
+            }
+          })
+          .then(player => {
+            return this._buildResult(player);
+          });
       });
   }
 
@@ -91,8 +96,10 @@ class AuthService {
       .then(player => {
         if (player) {
           return player;
-        } else {
+        } else if (email) {
           return Player.findOne({email: email});
+        } else {
+          return null;
         }
       });
   }

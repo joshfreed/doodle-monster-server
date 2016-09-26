@@ -7,16 +7,21 @@ class PlayerService {
   createPlayer(fields) {
     delete fields.password;
 
-    return Player
-      .findOne({email: fields.email})
-      .then(otherPlayer => {
-        if (otherPlayer) {
-          throw Boom.badRequest('That email address is already in use')
-        }
+    if (fields.email) {
+      return Player
+        .findOne({email: fields.email})
+        .then(otherPlayer => {
+          if (otherPlayer) {
+            throw Boom.badRequest('That email address is already in use')
+          }
 
-        const player = new Player(fields);
-        return player.save();
-      });
+          const player = new Player(fields);
+          return player.save();
+        });
+    } else {
+      const player = new Player(fields);
+      return player.save();
+    }
   }
 
   updatePlayer(playerId, fields) {

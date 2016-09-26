@@ -11,7 +11,7 @@ const fs = require('fs');
 const moment = require('moment');
 
 lab.experiment('POST /monster', () => {
-  const url = '/api/monster';
+  const url = '/monster';
   var player1, player2, player3, player4;
 
   lab.beforeEach(done => {
@@ -85,7 +85,7 @@ lab.experiment('POST /monster', () => {
 });
 
 lab.experiment('GET /me/monsters', () => {
-  const url = '/api/me/monsters';
+  const url = '/me/monsters';
   var player1, player2, player3, player4;
   var monster1, monster2;
   var imageData;
@@ -193,7 +193,7 @@ lab.experiment('GET /monster/{monsterId}', () => {
   });
 
   lab.test('Returns the full monster', done => {
-    const url = '/api/monster/' + monster1.id;
+    const url = '/monster/' + monster1.id;
 
     server.inject({method: 'GET', url: url, credentials: player1}, res => {
       res.statusCode.should.equal(200);
@@ -219,7 +219,7 @@ lab.experiment('GET /monster/{monsterId}', () => {
   });
 
   lab.test('Returns 404 if the monster cannot be found', done => {
-    const url = "/api/monster/" + require('mongoose').Types.ObjectId();
+    const url = "/monster/" + require('mongoose').Types.ObjectId();
 
     server.inject({method: 'GET', url: url, credentials: player1}, res => {
       res.statusCode.should.equal(404);
@@ -254,7 +254,7 @@ lab.experiment('POST /monster/{monsterId}/turns', () => {
   });
 
   lab.test('Adds a new turn and advances to the next player', done => {
-    const url = '/api/monster/' + monster.id + '/turns';
+    const url = '/monster/' + monster.id + '/turns';
     const imageData = fs.readFileSync(__dirname + '/chill-out.png', {encoding: 'base64'});
     const thumbnailData = fs.readFileSync(__dirname + '/thumbnail.png', {encoding: 'base64'});
 

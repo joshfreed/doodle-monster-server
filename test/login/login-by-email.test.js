@@ -6,7 +6,7 @@ const server = bootstrap.server;
 const helper = bootstrap.helper;
 
 lab.experiment('POST /auth/email', () => {
-  const url = "/api/auth/email";
+  const url = "/auth/email";
 
   lab.beforeEach(done => {
     helper

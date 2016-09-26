@@ -7,6 +7,12 @@ const Monster = mongoose.model('Monster');
 const HashService = require('../api/auth/HashService');
 const MonsterService = require('../api/monster/MonsterService');
 
+function randomString(length, chars) {
+  var result = '';
+  for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+  return result;
+}
+
 class Helper {
   constructor() {
     this.hashService = new HashService();
@@ -32,6 +38,10 @@ class Helper {
 
   aMonster() {
     return MonsterBuilder.aMonster();
+  }
+
+  generateToken() {
+    return randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
   }
 }
 
